@@ -128,7 +128,7 @@
         },
         methods: {
             createUser() {
-               axios.get('api/profile',this.form).then((r)=>{
+               axios.get('api/user',this.form).then((r)=>{
 
                }).catch((e)=>{
                    console.log(e);

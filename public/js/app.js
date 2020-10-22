@@ -2120,7 +2120,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     createUser: function createUser() {
-      axios.get('api/profile', this.form).then(function (r) {})["catch"](function (e) {
+      axios.get('api/user', this.form).then(function (r) {})["catch"](function (e) {
         console.log(e);
       });
     }

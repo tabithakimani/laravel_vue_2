@@ -16,8 +16,6 @@ use Illuminate\Support\Facades\Route;
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();
 //});
-Route::get('/a',function (){
-    return 1;
-});
+Route::resource('/user','App\Http\Controllers\API\UserController');
 
 
