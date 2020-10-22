@@ -2105,7 +2105,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2121,7 +2120,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     createUser: function createUser() {
-      this.form.post('/api/user');
+      axios.get('api/profile', this.form).then(function (r) {})["catch"](function (e) {
+        console.log(e);
+      });
     }
   },
   mounted: function mounted() {
@@ -39129,7 +39130,7 @@ var staticRenderFns = [
                   attrs: { "data-toggle": "modal", "data-target": "#addNew" }
                 },
                 [
-                  _vm._v("Add New \n                    "),
+                  _vm._v("Add New\n                            "),
                   _c("i", { staticClass: "fas fa-user-plus fa-fw" })
                 ]
               )
@@ -39171,7 +39172,7 @@ var staticRenderFns = [
                       _c("i", { staticClass: "fas fa-edit blue" })
                     ]),
                     _vm._v(
-                      "\n                        /\n                        "
+                      "\n                                /\n                                "
                     ),
                     _c("a", { attrs: { href: "#" } }, [
                       _c("i", { staticClass: "fas fa-trash red" })
@@ -54830,8 +54831,8 @@ var routes = [{
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Thinkpad\laravel_vue\larastart\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Thinkpad\laravel_vue\larastart\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/derrick/Desktop/laravel_vue_2/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/derrick/Desktop/laravel_vue_2/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
