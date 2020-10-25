@@ -7,7 +7,7 @@
                 <h3 class="card-title">Users Table</h3>
 
                 <div class="card-tools">
-                  <button class ='btn btn-success' data-toggle="modal" data-target="#addNew">Add New 
+                  <button class ='btn btn-success' data-toggle="modal" data-target="#addNew">Add New
                     <i class="fas fa-user-plus fa-fw"></i>
                   </button>
                 </div>
@@ -17,6 +17,7 @@
                 <table class="table table-hover">
                   <thead>
                     <tr>
+                        <th>Photo</th>
                       <th>ID</th>
                       <th>Name</th>
                       <th>Email</th>
@@ -27,6 +28,7 @@
                   </thead>
                   <tbody>
                     <tr v-for="user in users" :key="user.id">
+                        <td><img alt="Pic" :src="user.photo" style="width: 50px; height: 50px"></td>
                       <td>{{user.id}}</td>
                       <td>{{user.name}}</td>
                       <td>{{user.email}}</td>
@@ -36,13 +38,12 @@
                         <a href="#">
                           <i class="fas fa-edit blue"></i>
                         </a>
-                        /
                         <a href="#">
                           <i class="fas fa-trash red"></i>
                         </a>
                       </td>
                     </tr>
-                    
+
                   </tbody>
                 </table>
               </div>
@@ -98,9 +99,9 @@
                 class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
                 <has-error :form="form" field="password"></has-error>
             </div>
-          
 
-          
+
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -112,15 +113,14 @@
 </div>
     </div>
 
-    
+
 </template>
 
 <script>
     export default {
       data(){
         return{
-          users:{},
-
+          users: [],
           form:new Form({
             name:'',
             email:'',
@@ -136,7 +136,9 @@
           axios.get("api/user").then(({data})=>(this.users = data.data));
         },
         createUser(){
-          this.form.post('/api/user')
+            axios.post("api/user",this.form).then((data)=>{
+                axios.get("api/user").then(({data})=>(this.users = data.data));
+            })
         }
       },
       created() {

@@ -2108,10 +2108,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      users: {},
+      users: [],
       form: new Form({
         name: '',
         email: '',
@@ -2132,7 +2133,14 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     createUser: function createUser() {
-      this.form.post('/api/user');
+      var _this2 = this;
+
+      axios.post("api/user", this.form).then(function (data) {
+        axios.get("api/user").then(function (_ref2) {
+          var data = _ref2.data;
+          return _this2.users = data.data;
+        });
+      });
     }
   },
   created: function created() {
@@ -38862,6 +38870,13 @@ var render = function() {
                 "tbody",
                 _vm._l(_vm.users, function(user) {
                   return _c("tr", { key: user.id }, [
+                    _c("td", [
+                      _c("img", {
+                        staticStyle: { width: "50px", height: "50px" },
+                        attrs: { alt: "Pic", src: user.photo }
+                      })
+                    ]),
+                    _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(user.id))]),
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(user.name))]),
@@ -39169,7 +39184,7 @@ var staticRenderFns = [
             attrs: { "data-toggle": "modal", "data-target": "#addNew" }
           },
           [
-            _vm._v("Add New \n                    "),
+            _vm._v("Add New\n                    "),
             _c("i", { staticClass: "fas fa-user-plus fa-fw" })
           ]
         )
@@ -39182,6 +39197,8 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
+        _c("th", [_vm._v("Photo")]),
+        _vm._v(" "),
         _c("th", [_vm._v("ID")]),
         _vm._v(" "),
         _c("th", [_vm._v("Name")]),
@@ -39204,7 +39221,7 @@ var staticRenderFns = [
       _c("a", { attrs: { href: "#" } }, [
         _c("i", { staticClass: "fas fa-edit blue" })
       ]),
-      _vm._v("\n                        /\n                        "),
+      _vm._v(" "),
       _c("a", { attrs: { href: "#" } }, [
         _c("i", { staticClass: "fas fa-trash red" })
       ])
