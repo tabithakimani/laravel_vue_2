@@ -21,6 +21,7 @@
                       <th>Name</th>
                       <th>Email</th>
                       <th>Type</th>
+                      <th>Registered at</th>
                       <th>Modify</th>
                     </tr>
                   </thead>
@@ -30,6 +31,7 @@
                       <td>{{user.name}}</td>
                       <td>{{user.email}}</td>
                       <td>{{user.type}}</td>
+                      <td>{{user.created_at}}</td>
                       <td>
                         <a href="#">
                           <i class="fas fa-edit blue"></i>

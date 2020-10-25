@@ -2106,6 +2106,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -38868,6 +38870,8 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(user.type))]),
                     _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(user.created_at))]),
+                    _vm._v(" "),
                     _vm._m(2, true)
                   ])
                 }),
@@ -39185,6 +39189,8 @@ var staticRenderFns = [
         _c("th", [_vm._v("Email")]),
         _vm._v(" "),
         _c("th", [_vm._v("Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Registered at")]),
         _vm._v(" "),
         _c("th", [_vm._v("Modify")])
       ])
@@ -54518,6 +54524,9 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   routes: _routes__WEBPACK_IMPORTED_MODULE_2__["routes"],
   // short for `routes: routes`
   mode: 'history'
+});
+Vue.filter('upText', function (text) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
 });
 /**
  * The following block of code may be used to automatically register your
