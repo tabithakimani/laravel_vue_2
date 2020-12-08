@@ -7,7 +7,7 @@
                 <h3 class="card-title">Users Table</h3>
 
                 <div class="card-tools">
-                  <button class ='btn btn-success' data-toggle="modal" data-target="#addNew">Add New
+                  <button class ='btn btn-success' @click="newModal">Add New
                     <i class="fas fa-user-plus fa-fw"></i>
                   </button>
                 </div>
@@ -27,18 +27,18 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="user in users" :key="user.id">
+                    <tr v-for="user in users.data" :key="user.id">
                         <td><img alt="Pic" :src="user.photo" style="width: 50px; height: 50px"></td>
                       <td>{{user.id}}</td>
-                      <td>{{user.name}}</td>
+                      <td>{{user.name | upText}}</td>
                       <td>{{user.email}}</td>
-                      <td>{{user.type}}</td>
-                      <td>{{user.created_at}}</td>
+                      <td>{{user.type | upText}}</td>
+                      <td>{{user.created_at | myDate}}</td>
                       <td>
-                        <a href="#">
-                          <i class="fas fa-edit blue"></i>
+                        <a href="#" @click="editModal(user)">
+                          <i class="fas fa-edit blue "></i>
                         </a>
-                        <a href="#">
+                        <a href="#" @click="deleteUser(user.id)">
                           <i class="fas fa-trash red"></i>
                         </a>
                       </td>
@@ -48,6 +48,11 @@
                 </table>
               </div>
               <!-- /.card-body -->
+                <div class="card-footer">
+                    <pagination :data="users" @pagination-change-page="getResults"></pagination>
+                </div>
+
+
             </div>
             <!-- /.card -->
           </div>
@@ -56,13 +61,16 @@
 <div class="modal fade" id="addNew" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
+
       <div class="modal-header">
-        <h5 class="modal-title" id="addNewLabel">Add New</h5>
+        <h5 class="modal-title" v-show="editmode" id="updateNewLabel">Update User</h5>
+        <h5 class="modal-title" v-show="!editmode" id="addNewLabel">Add New</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form @submit.prevent="createUser">
+
+      <form @submit.prevent="editmode ? updateUser() : createUser()">
       <div class="modal-body">
           <div class="form-group">
             <input v-model="form.name" type="text" name="name" placeholder="Name"
@@ -105,7 +113,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Create</button>
+        <button v-show ="editmode" type="submit" class="btn btn-success">Update</button>
+        <button v-show ="!editmode" type="submit" class="btn btn-primary">Create</button>
       </div>
     </form>
     </div>
@@ -120,8 +129,10 @@
     export default {
       data(){
         return{
-          users: [],
+          editmode:false,
+          users: {},
           form:new Form({
+            id:'',
             name:'',
             email:'',
             password:'',
@@ -132,17 +143,110 @@
         }
       },
       methods:{
-        loadUser(){
-          axios.get("api/user").then(({data})=>(this.users = data.data));
+
+          getResults(page = 1) {
+              axios.get('api/user?page=' + page)
+                  .then(response => {
+                      this.users = response.data.data;
+                      console.log(this.users)
+                  });
+          },
+
+        updateUser(){
+           this.$Progress.start();
+                // console.log('Editing data');
+                this.form.put('api/user/'+this.form.id)
+                .then(() => {
+                  Fire.$emit('After');
+                    // success
+                    $('#addNew').modal('hide');
+                     swal(
+                        'Updated!',
+                        'Information has been updated.',
+                        'success'
+                        )
+                        this.$Progress.finish();
+
+                })
+                .catch(() => {
+                    this.$Progress.fail();
+                });
         },
-        createUser(){
-            axios.post("api/user",this.form).then((data)=>{
-                axios.get("api/user").then(({data})=>(this.users = data.data));
+          // console.log("hello");
+
+
+        editModal(user){
+          this.editmode = true;
+          this.form.reset();
+          $('#addNew').modal('show');
+          this.form.fill(user);
+        },
+        newModal(){
+          this.editmode = false;
+          this.form.reset();
+          $('#addNew').modal('show');
+        },
+
+        deleteUser(id){
+          Swal.fire({
+              title: 'Are you sure?',
+              text: "You won't be able to revert this!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+              // send requets to server
+              if (result.value){
+              this.form.delete('api/user/'+ id)
+              .then(()=>{
+                Fire.$emit('After');
+                Swal.fire(
+                  'Deleted!',
+                  'Your file has been deleted.',
+                  'success'
+                )
+              })
+              .catch(()=>{
+
+              })
+              }
+
             })
+        },
+
+        loadUser(){
+          axios.get("api/user").then(({data})=>(this.users = data));
+        },
+
+
+        createUser(){
+          this.$Progress.start()
+          this.form.post("api/user")
+          .then(()=>{
+            Fire.$emit('After');
+            $('#addNew').modal('hide')
+
+            toast.fire({
+              icon: 'success',
+              title: 'Signed in successfully'
+          })
+
+          this.$Progress.finish()
+          })
+          .catch(()=>{
+
+          })
+
         }
       },
+
       created() {
           this.loadUser();
+          Fire.$on('After',()=> this.loadUser());
+
+          // setInterval(() => this.loadUser(),3000);
       }
     }
 </script>

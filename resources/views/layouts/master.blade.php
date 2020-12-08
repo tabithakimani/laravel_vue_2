@@ -12,7 +12,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>AdminLTE 3 | Starter</title>
+  <title>User Management</title>
 
   <link rel="stylesheet" href="/css/app.css">
   <!-- Google Font: Source Sans Pro -->
@@ -111,6 +111,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </ul>
           </li>
 
+          <li class="nav-item">
+            <router-link to="developer"class="nav-link">
+              <i class="nav-icon fas fa-cogs"></i>
+              <p>
+                Developer
+              </p>
+            </router-link>
+          </li>
 
           <li class="nav-item">
             <router-link to="profile"class="nav-link">
@@ -152,6 +160,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <div class="content">
       <div class="container-fluid">
       <router-view :key="$route.name"></router-view>
+      <vue-progress-bar></vue-progress-bar>
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
