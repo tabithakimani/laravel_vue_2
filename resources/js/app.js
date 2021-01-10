@@ -5,7 +5,15 @@
  */
 
 require('./bootstrap');
+import store from './store/index';
+import Axios from 'axios'
+import Vue from 'vue'
 
+Vue.prototype.$http = Axios;
+const token = localStorage.getItem('token')
+if (token) {
+    Vue.prototype.$http.defaults.headers.common['Authorization'] = token
+}
 
 window.Vue = require('vue');
 import { Form, HasError, AlertError } from 'vform'
@@ -108,6 +116,7 @@ Vue.component(
 const app = new Vue({
     el: '#app',
     router,
+    store,
     data() {
       return {
           name: this.$route.name
