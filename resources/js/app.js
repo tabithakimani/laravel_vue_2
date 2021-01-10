@@ -12,9 +12,13 @@ import { Form, HasError, AlertError } from 'vform'
 
 window.Form = Form;
 
+import Gate from "./Gate";
+Vue.prototype.$gate = new Gate(window.user);
+
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 Vue.component('pagination', require('laravel-vue-pagination'));
+
 
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
@@ -67,13 +71,13 @@ window.Fire = new Vue();
  * Vue components. It will recursively scan this directory for the Vue
  * components and automatically register them with their "basename".
  *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
+ * Eg. ./components/NotFound.vue -> <example-component></example-component>
  */
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-// Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+// Vue.component('example-component', require('./components/NotFound.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -94,6 +98,11 @@ Vue.component(
 Vue.component(
   'passport-personal-access-tokens',
   require('./components/passport/PersonalAccessTokens.vue').default
+);
+
+Vue.component(
+    'not-found',
+    require('./components/NotFound.vue').default
 );
 
 const app = new Vue({
