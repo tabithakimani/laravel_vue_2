@@ -22,12 +22,7 @@ class UserController extends Controller
     public function index()
     {
 
-        if (Gate::allows('isAdmin')) {
             return User::paginate(10);
-        }
-        else{
-            return response()->json(['message' => 'unauthorised' ]);
-        }
     }
 
     /**
@@ -97,7 +92,6 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('isAdmin');
         $user = User::findOrFail($id);
         $user->delete();
         return ['message' => 'User deleted'];

@@ -10,7 +10,7 @@ use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable,HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -44,4 +44,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isAdmin()
+    {
+        return $this->type === 'admin';
+    }
+
+    public function isAuthor()
+    {
+        return $this->type === 'author';
+    }
+
+    public function isUser()
+    {
+        return $this->type === 'user';
+    }
+
+    public function isAll()
+    {
+        return $this->type === 'user' | $this->type === 'author' | $this->type === 'admin';
+    }
+
 }
